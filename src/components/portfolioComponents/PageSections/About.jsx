@@ -209,7 +209,7 @@ const About = () => {
 
           <div className='flex mx-2 gap-2 my-3 items-center'>
 
-            <a href='https://instagram.com/nishankx_' target="_blank">
+            <a href='https://instagram.com/nishankxp' target="_blank">
               <FaInstagramSquare className='backdrop-blur-xl bg-neutral-600/100 px-2 rounded-md text-5xl hover:bg-white/20 hover:scale-110 transition text-white'/>
             </a>
 
@@ -222,7 +222,7 @@ const About = () => {
             </a>
 
             <a
-              href='/RESUME.pdf'
+              href='/assets/docs/RESUME.pdf'
               download
               className='flex backdrop-blur-xl ml-1 bg-neutral-600/100 items-center px-2 rounded-md gap-1 text-white hover:bg-white/20 hover:scale-110 transition'>
 
