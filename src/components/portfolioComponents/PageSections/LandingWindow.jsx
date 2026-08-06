@@ -57,6 +57,7 @@ const LandingWindow = () => {
   });
 
   const transitionY = useTransform(smoothScroll, [0,1], [-200, 200])
+  const transitionX = useTransform(smoothScroll, [0,1], [100, -100])
   const transitionH = useTransform(smoothScroll, [0,1], [200, -200])
   const blur = useTransform(smoothScroll, [0,0.5,1], [10,0,10])
   const opacityContent = useTransform(smoothScroll, [0,0.5,1], [0,1,0])
@@ -101,6 +102,7 @@ const LandingWindow = () => {
         style={{
           translateZ: 100,
           y: transitionH,
+          x: transitionX,
           rotate: rotateH,
           scale: scaleH,
           
