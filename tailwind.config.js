@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily : {
-        impact : ["Impact", "Haettenschweiler", "Arial Narrow Bold", "sans-serif"],
+        impact : ["ImpactImp", "sans-serif"],
         rockSalt : ["rockSalt", "sans-serif"],
         miloner : ["miloner", "sans-serif"],
         colitez : ["colitez", 'sans-serif'],

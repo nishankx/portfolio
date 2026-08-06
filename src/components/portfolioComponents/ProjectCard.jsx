@@ -31,7 +31,7 @@ const ProjectCard = ({
             PROJECT
           </p>
 
-          <h1 className="font-impact text-[clamp(2rem,4vw,4rem)] leading-none mt-2">
+          <h1 className="font-impactImp text-[clamp(2rem,4vw,4rem)] leading-none mt-2">
             {title}
           </h1>
 
@@ -44,7 +44,7 @@ const ProjectCard = ({
 
         <div>
 
-          <h2 className="font-impact uppercase tracking-[.2em] text-lg mb-3">
+          <h2 className="font-impactImp uppercase tracking-[.2em] text-lg mb-3">
             Overview
           </h2>
 
@@ -56,7 +56,7 @@ const ProjectCard = ({
 
         <div>
 
-          <h2 className="font-impact uppercase tracking-[.2em] text-lg mb-3">
+          <h2 className="font-impactImp uppercase tracking-[.2em] text-lg mb-3">
             Tech Stack
           </h2>
 
@@ -147,7 +147,7 @@ const ProjectCard = ({
               Build
             </p>
 
-            <h2 className="mt-2 font-impact text-3xl">
+            <h2 className="mt-2 font-impactImp text-3xl">
               {date}
             </h2>
 
@@ -196,7 +196,7 @@ const ProjectCard = ({
     <h1
       className="
         mt-3
-        font-impact
+        font-impactImp
         text-center
         leading-none
         tracking-tight

@@ -59,7 +59,7 @@ const Skills = () => {
           }}
           className="mb-14"
         >
-          <h1 className="mt-3 font-impact text-[clamp(4rem,9vw,8rem)] leading-none text-white">
+          <h1 className="mt-3 font-impactImp text-[clamp(4rem,9vw,8rem)] leading-none text-white">
             Skills
           </h1>
 

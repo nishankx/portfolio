@@ -143,7 +143,7 @@ const About = () => {
             rotate: headingRotate,
             opacity: headingOpacity,
           }}
-          className='text-white font-impact pt-10 mb-3 text-7xl lg:text-8xl'>
+          className='text-white font-impactImp pt-10 mb-3 text-7xl lg:text-8xl'>
 
           NISHAN KASHYAP.
 

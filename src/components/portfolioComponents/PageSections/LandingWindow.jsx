@@ -83,7 +83,7 @@ const LandingWindow = () => {
           scale: scale,
         }}
         
-        className='relative text-[clamp(4rem,18vw,15rem)] rounded-xl flex flex-col justify-center items-center font-impact text-neutral-950 p-4'>
+        className='relative text-[clamp(4rem,18vw,15rem)] rounded-xl flex flex-col justify-center items-center font-impactImp text-neutral-950 p-4'>
           <img className='absolute rounded-md z-10 w-full h-full' src='/assets/images/card.jpg'></img>
           <div className='z-20'>I AM</div>
           <img className="absolute z-30 max-w-full object-contain" src={art}></img>

@@ -97,7 +97,7 @@ const Projects = () => {
           }}
           className="mb-14"
         >
-          <h1 className=" font-impact text-[clamp(4rem,9vw,8rem)] leading-none">
+          <h1 className=" font-impactImp text-[clamp(4rem,9vw,8rem)] leading-none">
             Projects
           </h1>
 
