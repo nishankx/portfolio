@@ -31,3 +31,13 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.hover-label::after {
+  content: "Hold to view";
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hover-label::after {
+    content: "Hover";
+  }
+}

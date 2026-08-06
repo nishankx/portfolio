@@ -89,7 +89,7 @@ const ProjectCard = ({
 
         <div className="flex items-end justify-between">
 
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
 
             {github && (
 
@@ -128,7 +128,7 @@ const ProjectCard = ({
                   gap-2
                   rounded-xl
                   bg-white
-                  px-5
+                  px-2
                   py-3
                   text-black
                 "

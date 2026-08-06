@@ -122,7 +122,7 @@ const Projects = () => {
             grid
             grid-cols-1
             gap-5
-            auto-rows-[30rem]
+            auto-rows-[40rem]
             lg:grid-cols-2
           ">
             {projects.map((project, index) => {

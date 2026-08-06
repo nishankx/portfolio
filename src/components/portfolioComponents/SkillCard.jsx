@@ -8,6 +8,7 @@ const cardStyle = {
 };
 
 const SkillCard = ({ techType, technologies, large = false }) => {
+
   return (
     <div
       className={`
@@ -73,6 +74,11 @@ const SkillCard = ({ techType, technologies, large = false }) => {
           scale: 1,
           filter: "blur(0px)",
         }}
+
+       whileTap={{
+        opacity:0,
+       }}
+       
        whileHover={{
           opacity: 0,
           scale: 0.98,
@@ -120,8 +126,7 @@ const SkillCard = ({ techType, technologies, large = false }) => {
 
           <div className="h-px w-10 bg-white/25" />
 
-          <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-white/50">
-            Hover
+          <span className="hover-label font-mono text-[11px] uppercase tracking-[0.35em] text-white/50">
           </span>
 
           <div className="h-px w-10 bg-white/25" />
