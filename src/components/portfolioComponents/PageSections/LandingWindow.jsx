@@ -105,7 +105,26 @@ const LandingWindow = () => {
           scale: scaleH,
           
         }}       
-        className="absolute w-52 h-52 md:w-64 md:h-64 lg:w-80 lg:h-80 left-1/2 top-1/2 translate-x-20 md:translate-x-40 lg:translate-x-72 translate-y-20 md:translate-y-32">
+        className="
+absolute
+
+w-40 h-40
+sm:w-48 sm:h-48
+md:w-64 md:h-64
+lg:w-80 lg:h-80
+
+left-1/2
+top-1/2
+
+translate-x-8
+sm:translate-x-14
+md:translate-x-40
+lg:translate-x-72
+
+translate-y-12
+sm:translate-y-16
+md:translate-y-32
+">
         
           <Hero />
       
