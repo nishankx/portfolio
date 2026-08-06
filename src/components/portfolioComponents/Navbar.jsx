@@ -38,8 +38,8 @@ const Navbar = () => {
             ease: 'easeInOut'
         }}
 
-        className='fixed z-50 w-full bottom-20 left-0'>
-            <nav className='max-w-xl mx-auto flex backdrop-blur-xl rounded-full bg-white/10'>
+        className="fixed z-50 w-full bottom-10 sm:bottom-20 lg:bottom-30 left-0 px-3">
+            <nav className="mx-auto flex max-w-fit rounded-full bg-white/10 backdrop-blur-xl px-1.5 sm:px-2 py-1">
                 
                 {navItems.map((item, idx) => (
                     
@@ -48,10 +48,10 @@ const Navbar = () => {
                         onMouseEnter={() => handleHover(idx)}
                         onMouseLeave={handleLeave}
                         onClick={() => handleClick(item.id)}
-                        className='relative w-full inline-block py-3 text-center text-xs text-neutral-500'>
+                        className="relative flex items-center justify-center rounded-full px-2 sm:px-4 py-2 text-[10px] sm:text-xs text-neutral-500">
 
-                            <span className='relative flex gap-2 z-20 justify-center items-center group-hover:text-neutral-400 text-neutral-500'>
-                                <item.icon className='text-xl'/>{item.title}
+                            <span className="relative z-20 flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap text-neutral-500">
+                                <item.icon className="text-base sm:text-xl" />{item.title}
                             </span>
                             
                             {hovered === idx && (
