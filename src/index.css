@@ -49,3 +49,13 @@ html {
     content: "Hover";
   }
 }
+
+.tap-label::after {
+  content: "Tap to view";
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hover-label::after {
+    content: "Hover to View";
+  }
+}

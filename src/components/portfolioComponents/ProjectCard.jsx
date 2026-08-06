@@ -223,13 +223,12 @@ const ProjectCard = ({
 
     <div className="mt-8 flex items-center gap-2">
 
-      <div className="h-[1px] w-12 bg-white/30" />
+      <div className="h-[1px] w-8 bg-white/30" />
 
-      <p className="font-mono text-xs uppercase tracking-[.3em] text-white/50">
-        Hover to Explore
+      <p className="tap-label font-mono text-xs uppercase tracking-[.3em] text-white/50">
       </p>
 
-      <div className="h-[1px] w-12 bg-white/30" />
+      <div className="h-[1px] w-8 bg-white/30" />
 
     </div>
 
