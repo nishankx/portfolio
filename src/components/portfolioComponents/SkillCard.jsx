@@ -81,11 +81,11 @@ const SkillCard = ({ techType, technologies, large = false }) => {
        
        whileHover={{
           opacity: 0,
-          scale: 0.98,
-          filter: "blur(6px)",
+          scale: 0.95,
+          filter: "blur(10px)",
         }}
         transition={{
-          duration: 0.22,
+          duration: 0.3,
           ease: "easeInOut",
         }}
         style={cardStyle}

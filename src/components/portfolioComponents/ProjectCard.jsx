@@ -14,12 +14,15 @@ const ProjectCard = ({
 }) => {
 
   const [hovered, setHovered] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const open = revealed? true: false;
 
   return (
     <div
   className="relative w-full h-full rounded-3xl overflow-hidden"
   onMouseEnter={() => setHovered(true)}
   onMouseLeave={() => setHovered(false)}
+  onClick={() => setHovered(prev => !prev)}
 >
 
       <div className="absolute inset-0 z-10 p-8 flex flex-col justify-between bg-neutral-950 text-white">
@@ -162,11 +165,11 @@ const ProjectCard = ({
 
           animate={{
             opacity: hovered ? 0 : 1,
-            scale: hovered ? 0.95 : 1,
+            scale: hovered ? 0.90 : 1,
             filter: hovered ? "blur(10px)" : "blur(0px)",
           }}
           transition={{
-              duration: 0.25,
+              duration: 0.3,
               ease: "easeInOut",
             }}
           className={`

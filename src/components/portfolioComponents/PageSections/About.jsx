@@ -5,6 +5,7 @@ import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaCloudDownloadAlt } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useState } from "react";
 import emailjs from "@emailjs/browser"
@@ -219,6 +220,10 @@ const About = () => {
 
             <a href='https://www.linkedin.com/in/nishankx' target="_blank">
               <FaLinkedin className='backdrop-blur-xl bg-neutral-600/100 px-2 rounded-md text-5xl hover:bg-white/20 hover:scale-110 transition text-white'/>
+            </a>
+
+            <a href='https://github.com/nishankx' target="_blank">
+              <FaGithub className='backdrop-blur-xl bg-neutral-600/100 px-2 rounded-md text-5xl hover:bg-white/20 hover:scale-110 transition text-white'/>
             </a>
 
             <a
