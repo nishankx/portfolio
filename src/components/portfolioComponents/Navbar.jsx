@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'motion/react'
+import { Link } from 'react-router'
 import navItems from '../../libs/NavItems'
-
-
 
 const Navbar = () => {
     
@@ -11,14 +10,15 @@ const Navbar = () => {
     const handleHover = (idx) => setHovered(idx);
     const handleLeave = () => setHovered(null);
     const handleClick = (id) => {
-        document.getElementById(id).scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        })
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     }
 
-    
-    
     return (
     <motion.div
         initial={{
@@ -41,15 +41,9 @@ const Navbar = () => {
         className="fixed z-50 w-full bottom-10 sm:bottom-20 lg:bottom-30 left-0 px-3">
             <nav className="mx-auto flex max-w-fit rounded-full bg-white/10 backdrop-blur-xl px-1.5 sm:px-1 py-1">
                 
-                {navItems.map((item, idx) => (
-                    
-                    <button
-                        key={item.title}
-                        onMouseEnter={() => handleHover(idx)}
-                        onMouseLeave={handleLeave}
-                        onClick={() => handleClick(item.id)}
-                        className="relative flex items-center justify-center rounded-full px-2 sm:px-6 py-3 text-[10px] sm:text-xs text-neutral-500">
-
+                {navItems.map((item, idx) => {
+                    const content = (
+                        <>
                             <span className="relative z-20 flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap text-neutral-500">
                                 <item.icon className="text-base sm:text-xl" />{item.title}
                             </span>
@@ -59,10 +53,33 @@ const Navbar = () => {
                                 layoutId="hover"
                                 className='absolute inset-0 rounded-full w-full h-full bg-white'></motion.div>
                             )}
-                            
-                    </button>
+                        </>
+                    );
 
-                ))}
+                    if (item.path) {
+                        return (
+                            <Link
+                                key={item.title}
+                                to={item.path}
+                                onMouseEnter={() => handleHover(idx)}
+                                onMouseLeave={handleLeave}
+                                className="relative flex items-center justify-center rounded-full px-2 sm:px-6 py-3 text-[10px] sm:text-xs text-neutral-500">
+                                {content}
+                            </Link>
+                        );
+                    }
+
+                    return (
+                        <button
+                            key={item.title}
+                            onMouseEnter={() => handleHover(idx)}
+                            onMouseLeave={handleLeave}
+                            onClick={() => handleClick(item.id)}
+                            className="relative flex items-center justify-center rounded-full px-2 sm:px-6 py-3 text-[10px] sm:text-xs text-neutral-500">
+                            {content}
+                        </button>
+                    );
+                })}
             </nav>
     </motion.div>
   )
