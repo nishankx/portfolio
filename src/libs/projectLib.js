@@ -1,56 +1,56 @@
 const projects = [
   {
     id: 1,
-    title: "OASIS",
+    title: "KafkaZero",
     techStack: [
-      "NextJs",
-      "PyTorch",
-      "TypeScript",
-      "Prisma",
+      "Golang",
+      "Distributed Systems",
+      "Concurrency",
+      "TCP Networking",
     ],
     oneLineDesc:
-      "Open-source platform for analyzing software repositories and developer ecosystems.",
+      "A Kafka-inspired distributed event streaming system, built from first principles in Go.",
     miniDescription:
-      "Oasis is an AI-powered open-source contribution ecosystem that intelligently circulates repositories, matches developers with relevant projects, and enforces meaningful contributions through automated PR evaluation.",
-    github: "https://github.com/HACK-A-DAY-Online-Participants/OASIS",
+      "A minimal, from-scratch distributed commit log and message broker inspired by Apache Kafka. Implements partitioned topic logs, offset management, concurrent consumer groups, and TCP client-broker protocol in Go.",
+    github: "https://github.com/nishankx/kafka-zero",
     demo: "",
-    date: "23 · NOV · 2025",
+    date: "ONGOING",
   },
 
   {
     id: 2,
-    title: "NEURALVOICE",
+    title: "GoRedis",
     techStack: [
-      "Scikit-Learn",
-      "ESP32-S3",
-      "Python",
-      "C++",
+      "Golang",
+      "RESP Protocol",
+      "TCP Server",
+      "AOF Persistence",
     ],
     oneLineDesc:
-      "Wearable silent speech recognition system powered by surface EMG.",
+      "A lightweight, from-scratch implementation of a Redis-compatible in-memory key-value database server written in Go.",
     miniDescription:
-      "Reads eSMG signals from the cheek and jaw muscles to map them to words and convert them into text and audio",
-    github: "https://github.com/nishankx/eSMg-to-Text",
+      "This project implements the core components of Redis: a custom RESP (REdis Serialization Protocol) parser and serializer, an in-memory data store with thread-safe locking, a TCP server, and AOF (Append-Only File) persistence for durability across restarts.",
+    github: "https://github.com/nishankx/goredis",
     demo: "",
-    date: "15 · JUN · 2026",
+    date: "ONGOING",
   },
 
   {
     id: 3,
-    title: "GithubCO",
+    title: "Torrentis",
     techStack: [
-      "GitHub REST API",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
+      "Golang",
+      "BitTorrent Protocol",
+      "P2P Networking",
+      "Bencode",
     ],
     oneLineDesc:
-      "GitHub Profile Analyzer",
+      "A BitTorrent client built from scratch in Go for peer-to-peer file sharing and concurrent piece downloading.",
     miniDescription:
-      "Enter any GitHub username and get a visual breakdown — top languages, commit frequency, most starred repos, contribution streaks — all fetched from the GitHub REST API.",
-    github: "https://github.com/nishankx/github-profile-analyzer",
-    demo: "https://githubco-five.vercel.app/",
-    date: "23 · JUN · 2026",
+      "Implements the core BitTorrent specification: Bencode parser, tracker communication over HTTP/UDP, P2P peer handshake and wire protocol, piece verification with SHA-1 hashing, and concurrent piece assembly.",
+    github: "https://github.com/nishankx/torrentis",
+    demo: "",
+    date: "ONGOING",
   },
 ];
 
