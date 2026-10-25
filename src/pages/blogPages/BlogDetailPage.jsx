@@ -5,6 +5,7 @@ import { bgStyle } from '../../libs/settings';
 import { fetchBlogByIdOrSlug } from '../../libs/blogApi';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import BlogNavbar from '../../components/blogComponents/BlogNavbar';
+import NewsletterCard from '../../components/blogComponents/NewsletterCard';
 import { FaArrowLeft, FaClock, FaCalendarAlt, FaPen, FaShareAlt } from 'react-icons/fa';
 
 // Helper to render markdown content with clean styling matching the design
@@ -297,6 +298,15 @@ const BlogDetailPage = () => {
                         {/* Full Content Body */}
                         <div className="prose prose-invert max-w-none my-10">
                             {renderContent(blog.content)}
+                        </div>
+
+                        {/* Newsletter Subscription Section */}
+                        <div className="my-16">
+                            <NewsletterCard
+                                source={`blog_article_${blog.slug || blog._id}`}
+                                title="Liked this piece? Get the next one."
+                                subtitle="I share deep dives on full-stack systems, 3D graphics, and lessons learned while building. Straight to your inbox."
+                            />
                         </div>
 
                         {/* Footer Navigation */}
