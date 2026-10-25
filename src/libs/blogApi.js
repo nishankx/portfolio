@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://blogsite-jyzb.onrender.com';
+const RAW_API_URL = import.meta.env.VITE_API_URL || 'https://blogsite-jyzb.onrender.com';
+const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
 
 export async function verifyAdminKey(adminKey) {
     const res = await fetch(`${API_BASE_URL}/blogs/auth/verify`, {
