@@ -6,7 +6,7 @@ import BlogDetailPage from './pages/blogPages/BlogDetailPage'
 
 const App = () => {
   return (
-    <div>
+    <div >
       <Routes>
         <Route path="/" element={<PortfolioPage />} />
         <Route path="/blogs" element={<BlogsPage />} />
