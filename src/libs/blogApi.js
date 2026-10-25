@@ -104,3 +104,31 @@ export async function subscribeToNewsletter(email, source = 'blog') {
     }
     return data;
 }
+
+export async function syncNewsletterAudience(adminKey) {
+    const res = await fetch(`${API_BASE_URL}/newsletter/sync-audience`, {
+        method: 'POST',
+        headers: {
+            'x-admin-key': adminKey,
+        },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to sync subscribers to Resend Audience');
+    }
+    return data;
+}
+
+export async function fetchNewsletterStats(adminKey) {
+    const res = await fetch(`${API_BASE_URL}/newsletter/stats`, {
+        headers: {
+            'x-admin-key': adminKey,
+        },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to fetch newsletter stats');
+    }
+    return data;
+}
+

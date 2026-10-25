@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle } from 'react-icons/fa';
-import { verifyAdminKey } from '../../libs/blogApi';
+import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle, FaUsers, FaSync } from 'react-icons/fa';
+import { verifyAdminKey, fetchNewsletterStats, syncNewsletterAudience } from '../../libs/blogApi';
 
 const AdminAuthModal = ({
     isOpen,
@@ -15,6 +15,20 @@ const AdminAuthModal = ({
     const [keyInput, setKeyInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [stats, setStats] = useState(null);
+    const [syncing, setSyncing] = useState(false);
+    const [syncMessage, setSyncMessage] = useState('');
+
+    useEffect(() => {
+        if (isOpen && isAdmin) {
+            const key = localStorage.getItem('portfolio_admin_key');
+            if (key) {
+                fetchNewsletterStats(key)
+                    .then((data) => setStats(data))
+                    .catch(() => {});
+            }
+        }
+    }, [isOpen, isAdmin]);
 
     if (!isOpen) return null;
 
@@ -38,6 +52,23 @@ const AdminAuthModal = ({
             setError(err.message || 'Verification failed. Incorrect key.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSyncAudience = async () => {
+        const key = localStorage.getItem('portfolio_admin_key');
+        if (!key) return;
+        setSyncing(true);
+        setSyncMessage('');
+        try {
+            const res = await syncNewsletterAudience(key);
+            setSyncMessage(res.message || 'Synced to Resend Audience successfully!');
+            const updatedStats = await fetchNewsletterStats(key);
+            setStats(updatedStats);
+        } catch (err) {
+            setSyncMessage(err.message || 'Audience sync failed.');
+        } finally {
+            setSyncing(false);
         }
     };
 
@@ -87,6 +118,38 @@ const AdminAuthModal = ({
                                         The Write and Edit buttons are visible and active on your browser.
                                     </p>
                                 </div>
+                            </div>
+
+                            {/* Newsletter Stats & Audience Sync */}
+                            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <FaUsers className="text-white/60 text-sm" />
+                                        <span className="font-mono text-xs uppercase tracking-wider text-white">
+                                            Newsletter Audience
+                                        </span>
+                                    </div>
+                                    <span className="font-mono text-xs text-emerald-400 font-semibold">
+                                        {stats ? `${stats.active} Active` : 'Loading...'}
+                                    </span>
+                                </div>
+                                <p className="font-colitez text-xs text-white/50">
+                                    Subscribers are saved in MongoDB and can be synced to your Resend Audience list for broadcasts.
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={handleSyncAudience}
+                                    disabled={syncing}
+                                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 py-2 font-mono text-[11px] uppercase tracking-wider text-white hover:bg-white/10 transition disabled:opacity-50"
+                                >
+                                    <FaSync className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} />
+                                    {syncing ? 'Syncing to Resend...' : 'Sync to Resend Audience'}
+                                </button>
+                                {syncMessage && (
+                                    <p className="font-mono text-[11px] text-white/70 text-center">
+                                        {syncMessage}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-3">

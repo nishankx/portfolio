@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaLock, FaKey, FaTrash } from 'react-icons/fa';
+import { FaLock, FaKey, FaTrash, FaPaperPlane } from 'react-icons/fa';
 import { createBlog, updateBlog, deleteBlog } from '../../libs/blogApi';
 
 const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDeleted }) => {
@@ -13,6 +13,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
     const [tags, setTags] = useState('');
     const [coverImage, setCoverImage] = useState('');
     const [isPublished, setIsPublished] = useState(true);
+    const [notifySubscribers, setNotifySubscribers] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -31,6 +32,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags(existingBlog.tags ? existingBlog.tags.join(', ') : '');
             setCoverImage(existingBlog.coverImage || '');
             setIsPublished(existingBlog.isPublished !== undefined ? existingBlog.isPublished : true);
+            setNotifySubscribers(false);
         } else {
             setTitle('');
             setSlug('');
@@ -39,6 +41,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags('');
             setCoverImage('');
             setIsPublished(true);
+            setNotifySubscribers(true);
         }
         setError('');
         setSuccessMessage('');
@@ -78,23 +81,32 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             coverImage: coverImage.trim() || undefined,
             tags: parsedTags,
             isPublished,
+            notifySubscribers: Boolean(isPublished && notifySubscribers),
         };
 
         try {
             if (existingBlog) {
                 const updated = await updateBlog(existingBlog._id, payload, adminKey.trim());
-                setSuccessMessage('Post updated successfully!');
+                setSuccessMessage(
+                    notifySubscribers
+                        ? 'Post updated & newsletter subscribers notified!'
+                        : 'Post updated successfully!'
+                );
                 setTimeout(() => {
                     if (onSaved) onSaved(updated);
                     onClose();
-                }, 800);
+                }, 900);
             } else {
                 const created = await createBlog(payload, adminKey.trim());
-                setSuccessMessage('Post published successfully!');
+                setSuccessMessage(
+                    notifySubscribers
+                        ? 'Post published & newsletter subscribers notified!'
+                        : 'Post published successfully!'
+                );
                 setTimeout(() => {
                     if (onSaved) onSaved(created);
                     onClose();
-                }, 800);
+                }, 900);
             }
         } catch (err) {
             setError(err.message || 'Operation failed');
@@ -268,17 +280,46 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                             />
                         </div>
 
-                        {/* Is Published Toggle */}
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                id="isPublished"
-                                checked={isPublished}
-                                onChange={(e) => setIsPublished(e.target.checked)}
-                                className="h-4 w-4 rounded border-white/20 bg-white/10 text-white accent-white"
-                            />
-                            <label htmlFor="isPublished" className="font-mono text-xs uppercase tracking-wider text-white/70">
-                                Publish Immediately
+                        {/* Publish & Newsletter Toggles */}
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+                            <label className="flex items-center gap-3 cursor-pointer select-none">
+                                <input
+                                    type="checkbox"
+                                    id="isPublished"
+                                    checked={isPublished}
+                                    onChange={(e) => {
+                                        setIsPublished(e.target.checked);
+                                        if (!e.target.checked) setNotifySubscribers(false);
+                                    }}
+                                    className="h-4 w-4 rounded border-white/20 bg-white/10 text-white accent-white cursor-pointer"
+                                />
+                                <div>
+                                    <span className="font-mono text-xs uppercase tracking-wider text-white">
+                                        Publish Immediately
+                                    </span>
+                                    <p className="font-colitez text-xs text-white/50">
+                                        Article will be live and visible to all visitors.
+                                    </p>
+                                </div>
+                            </label>
+
+                            <label className={`flex items-start gap-3 cursor-pointer select-none transition-opacity ${!isPublished ? 'opacity-40 cursor-not-allowed' : ''}`}>
+                                <input
+                                    type="checkbox"
+                                    id="notifySubscribers"
+                                    checked={notifySubscribers}
+                                    disabled={!isPublished}
+                                    onChange={(e) => setNotifySubscribers(e.target.checked)}
+                                    className="mt-0.5 h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 accent-emerald-500 cursor-pointer disabled:cursor-not-allowed"
+                                />
+                                <div>
+                                    <span className={`font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 ${isPublished ? 'text-emerald-400' : 'text-white/40'}`}>
+                                        <FaPaperPlane className="text-[10px]" /> Notify newsletter subscribers via Resend
+                                    </span>
+                                    <p className="font-colitez text-xs text-white/50">
+                                        Sends an automated email announcement to all active subscribers.
+                                    </p>
+                                </div>
                             </label>
                         </div>
 
