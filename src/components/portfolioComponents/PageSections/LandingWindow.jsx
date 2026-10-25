@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import { motion,useScroll,useTransform,useSpring,useMotionTemplate,scale } from "motion/react";
 import art from '/assets/images/Nishan_WA.png'
 import Hero from '../KeyModel/Hero'
-import { rotate } from 'three/src/nodes/utils/RotateNode.js'
 import { bgStyle } from '../../../libs/settings'
 
 

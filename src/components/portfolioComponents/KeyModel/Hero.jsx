@@ -8,7 +8,8 @@ export default function Hero() {
   return (
     <div className="w-full h-full">
       <Canvas
-        gl={{ alpha: true }}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true, powerPreference: "high-performance" }}
         camera={{
           position: [0, 1.5, 6],
           fov: 35,
