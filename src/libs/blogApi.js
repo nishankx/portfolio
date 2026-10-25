@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://blogsite-jyzb.onrender.com';
 
 export async function verifyAdminKey(adminKey) {
     const res = await fetch(`${API_BASE_URL}/blogs/auth/verify`, {
