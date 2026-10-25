@@ -77,11 +77,11 @@ const BlogsPage = () => {
                         THOUGHTS & WRITE-UPS
                     </p>
                     <h1 className="mt-2 font-impactImp text-[clamp(3.5rem,8vw,7rem)] leading-none tracking-tight">
-                        Articles
+                        Blogs
                     </h1>
                     <div className="mt-4 h-[2px] w-72 bg-white" />
                     <p className="mt-5 max-w-2xl font-colitez text-white/70 text-lg sm:text-xl leading-relaxed">
-                        Explorations in Machine Learning, scalable system design, clean software architecture, and product building.
+                        Documenting the questions I ask, the things I build, the ideas I explore, and the person I become along the way
                     </p>
                 </motion.div>
 
@@ -116,7 +116,7 @@ const BlogsPage = () => {
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search articles..."
+                            placeholder="Search blogs..."
                             className="w-full rounded-full border border-white/15 bg-white/5 pl-10 pr-4 py-2 font-mono text-xs text-white placeholder-white/30 focus:border-white/40 focus:outline-none transition"
                         />
                     </div>
@@ -158,15 +158,15 @@ const BlogsPage = () => {
                         </p>
                         <p className="mt-3 font-colitez text-white/70 text-lg">
                             {searchTerm || selectedTag !== 'ALL'
-                                ? 'No articles match your search or filter.'
-                                : 'No articles published yet.'}
+                                ? 'No blogs match your search or filter.'
+                                : 'No blogs published yet.'}
                         </p>
                         {isAdmin && (
                             <button
                                 onClick={() => openEditor(null, handleBlogSaved)}
                                 className="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-mono text-xs uppercase text-black hover:bg-neutral-200 transition"
                             >
-                                <FaPenNib className="text-xs" /> Write First Article
+                                <FaPenNib className="text-xs" /> Write First Blog
                             </button>
                         )}
                     </div>

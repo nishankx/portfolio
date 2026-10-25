@@ -1,6 +1,7 @@
 import {
   SiC,
   SiCplusplus,
+  SiGo,
   SiPython,
   SiOpenjdk,
   SiHtml5,
@@ -11,13 +12,12 @@ import {
   SiReact,
   SiNextdotjs,
   SiTailwindcss,
-  SiFramer,
   SiThreedotjs,
 
   SiNodedotjs,
   SiExpress,
-  SiDjango,
   SiFastapi,
+  SiDjango,
 
   SiMysql,
   SiMongodb,
@@ -27,13 +27,11 @@ import {
   SiFigma,
   SiPostman,
   SiFirebase,
-  SiVite,
   SiLinux,
   SiGit,
   SiGithub,
   SiVercel,
 } from "react-icons/si";
-
 
 const skills = [
   {
@@ -42,6 +40,7 @@ const skills = [
     technologies: [
       { name: "C", icon: SiC, color: "#A8B9CC" },
       { name: "C++", icon: SiCplusplus, color: "#00599C" },
+      { name: "Go", icon: SiGo, color: "#00ADD8" },
       { name: "Python", icon: SiPython, color: "#3776AB" },
       { name: "Java", icon: SiOpenjdk, color: "#EA2D2E" },
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
@@ -56,7 +55,6 @@ const skills = [
       { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
       { name: "CSS3", icon: SiCss, color: "#1572B6" },
       { name: "React", icon: SiReact, color: "#61DAFB" },
-      { name: "Motion", icon: SiFramer, color: "#0055FF" },
       { name: "Next.js", icon: SiNextdotjs, color: "#FFFFFF" },
       { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4" },
       { name: "Three.js", icon: SiThreedotjs, color: "#FFFFFF" },
@@ -92,7 +90,6 @@ const skills = [
       { name: "Figma", icon: SiFigma, color: "#F24E1E" },
       { name: "Postman", icon: SiPostman, color: "#FF6C37" },
       { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
-      { name: "Vite", icon: SiVite, color: "#646CFF" },
       { name: "Linux", icon: SiLinux, color: "#FCC624" },
       { name: "Git", icon: SiGit, color: "#F05032" },
       { name: "GitHub", icon: SiGithub, color: "#FFFFFF" },

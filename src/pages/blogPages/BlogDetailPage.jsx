@@ -177,7 +177,7 @@ const BlogDetailPage = () => {
                     to="/blogs"
                     className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-white/50 hover:text-white transition mb-8"
                 >
-                    <FaArrowLeft className="text-[10px]" /> Back to all articles
+                    <FaArrowLeft className="text-[10px]" /> Back to all blogs
                 </Link>
 
                 {/* Loading State */}
@@ -198,7 +198,7 @@ const BlogDetailPage = () => {
                             to="/blogs"
                             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 font-mono text-xs uppercase text-black hover:bg-neutral-200 transition"
                         >
-                            Return to Articles
+                            Return to Blogs
                         </Link>
                     </div>
                 )}
@@ -305,7 +305,7 @@ const BlogDetailPage = () => {
                                 to="/blogs"
                                 className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white hover:bg-white/10 transition"
                             >
-                                <FaArrowLeft className="text-xs" /> All Articles
+                                <FaArrowLeft className="text-xs" /> All Blogs
                             </Link>
 
                             <button
