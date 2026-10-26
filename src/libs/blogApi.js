@@ -90,3 +90,34 @@ export async function deleteBlog(id, adminKey) {
     return data;
 }
 
+export async function subscribeToNewsletter(email) {
+    const res = await fetch(`${API_BASE_URL}/newsletter/subscribe`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to subscribe to newsletter');
+    }
+    return data;
+}
+
+export async function broadcastBlogToSubscribers(id, adminKey) {
+    const res = await fetch(`${API_BASE_URL}/blogs/${id}/broadcast`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': adminKey,
+        },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to broadcast blog to subscribers');
+    }
+    return data;
+}
+
+

@@ -5,6 +5,7 @@ import { fetchBlogs } from '../../libs/blogApi';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import BlogNavbar from '../../components/blogComponents/BlogNavbar';
 import BlogCard from '../../components/blogComponents/BlogCard';
+import NewsletterCard from '../../components/blogComponents/NewsletterCard';
 import { FaSearch, FaPenNib, FaRedo } from 'react-icons/fa';
 
 const BlogsPage = () => {
@@ -187,6 +188,11 @@ const BlogsPage = () => {
                         ))}
                     </div>
                 )}
+
+                {/* Newsletter Subscription Section */}
+                <div className="mt-20">
+                    <NewsletterCard />
+                </div>
             </main>
         </div>
     );

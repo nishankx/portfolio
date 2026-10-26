@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaLock, FaKey, FaTrash } from 'react-icons/fa';
+import { FaLock, FaKey, FaTrash, FaPaperPlane } from 'react-icons/fa';
 import { createBlog, updateBlog, deleteBlog } from '../../libs/blogApi';
 
 const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDeleted }) => {
@@ -13,6 +13,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
     const [tags, setTags] = useState('');
     const [coverImage, setCoverImage] = useState('');
     const [isPublished, setIsPublished] = useState(true);
+    const [broadcast, setBroadcast] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -31,6 +32,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags(existingBlog.tags ? existingBlog.tags.join(', ') : '');
             setCoverImage(existingBlog.coverImage || '');
             setIsPublished(existingBlog.isPublished !== undefined ? existingBlog.isPublished : true);
+            setBroadcast(false);
         } else {
             setTitle('');
             setSlug('');
@@ -39,6 +41,7 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags('');
             setCoverImage('');
             setIsPublished(true);
+            setBroadcast(true);
         }
         setError('');
         setSuccessMessage('');
@@ -78,19 +81,28 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             coverImage: coverImage.trim() || undefined,
             tags: parsedTags,
             isPublished,
+            broadcast: Boolean(broadcast && isPublished),
         };
 
         try {
             if (existingBlog) {
                 const updated = await updateBlog(existingBlog._id, payload, adminKey.trim());
-                setSuccessMessage('Post updated successfully!');
+                setSuccessMessage(
+                    broadcast && isPublished
+                        ? 'Post updated & broadcast sent to newsletter subscribers!'
+                        : 'Post updated successfully!'
+                );
                 setTimeout(() => {
                     if (onSaved) onSaved(updated);
                     onClose();
                 }, 900);
             } else {
                 const created = await createBlog(payload, adminKey.trim());
-                setSuccessMessage('Post created successfully!');
+                setSuccessMessage(
+                    broadcast && isPublished
+                        ? 'Post published & broadcast sent to newsletter subscribers!'
+                        : 'Post created successfully!'
+                );
                 setTimeout(() => {
                     if (onSaved) onSaved(created);
                     onClose();
@@ -268,8 +280,8 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                             />
                         </div>
 
-                        {/* Publish Toggle */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        {/* Publish & Broadcast Toggles */}
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
                             <label className="flex items-center gap-3 cursor-pointer select-none">
                                 <input
                                     type="checkbox"
@@ -289,6 +301,26 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                                     </p>
                                 </div>
                             </label>
+
+                            {isPublished && (
+                                <label className="flex items-center gap-3 cursor-pointer select-none pt-2 border-t border-white/10">
+                                    <input
+                                        type="checkbox"
+                                        id="broadcast"
+                                        checked={broadcast}
+                                        onChange={(e) => setBroadcast(e.target.checked)}
+                                        className="h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 accent-emerald-500 cursor-pointer"
+                                    />
+                                    <div>
+                                        <span className="font-mono text-xs uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                                            <FaPaperPlane className="text-[10px]" /> Broadcast to newsletter subscribers
+                                        </span>
+                                        <p className="font-colitez text-xs text-white/50">
+                                            Sends an email alert with a direct read link to all active subscribers.
+                                        </p>
+                                    </div>
+                                </label>
+                            )}
                         </div>
 
                         {/* Actions */}

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { bgStyle } from '../../libs/settings';
-import { fetchBlogByIdOrSlug } from '../../libs/blogApi';
+import { fetchBlogByIdOrSlug, broadcastBlogToSubscribers } from '../../libs/blogApi';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import BlogNavbar from '../../components/blogComponents/BlogNavbar';
-import { FaArrowLeft, FaClock, FaCalendarAlt, FaPen, FaShareAlt } from 'react-icons/fa';
+import NewsletterCard from '../../components/blogComponents/NewsletterCard';
+import { FaArrowLeft, FaClock, FaCalendarAlt, FaPen, FaShareAlt, FaPaperPlane } from 'react-icons/fa';
 
 // Helper to render markdown content with clean styling matching the design
 const renderContent = (content) => {
@@ -127,6 +128,31 @@ const BlogDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [copied, setCopied] = useState(false);
+    const [broadcasting, setBroadcasting] = useState(false);
+    const [broadcastMessage, setBroadcastMessage] = useState('');
+
+    const handleBroadcast = async () => {
+        if (!blog?._id) return;
+        const key = localStorage.getItem('portfolio_admin_key');
+        if (!key) {
+            alert('Admin key required. Please log into Admin session.');
+            return;
+        }
+
+        if (!window.confirm(`Broadcast "${blog.title}" to all newsletter subscribers?`)) return;
+
+        setBroadcasting(true);
+        try {
+            const res = await broadcastBlogToSubscribers(blog._id, key);
+            setBroadcastMessage('Dispatched!');
+            setTimeout(() => setBroadcastMessage(''), 3000);
+            alert(res.message || 'Broadcast dispatched successfully!');
+        } catch (err) {
+            alert(err.message || 'Failed to broadcast blog');
+        } finally {
+            setBroadcasting(false);
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -264,12 +290,23 @@ const BlogDetailPage = () => {
                                     {copied ? 'Copied Link!' : 'Share'}
                                 </button>
                                 {isAdmin && (
-                                    <button
-                                        onClick={() => openEditor(blog, (updated) => setBlog(updated), () => navigate('/blogs'))}
-                                        className="flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 font-mono text-xs text-white/70 hover:bg-white/10 hover:text-white transition"
-                                    >
-                                        <FaPen className="text-xs" /> Edit
-                                    </button>
+                                    <>
+                                        <button
+                                            onClick={handleBroadcast}
+                                            disabled={broadcasting}
+                                            className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 font-mono text-xs text-emerald-300 hover:bg-emerald-500/20 transition disabled:opacity-50"
+                                            title="Broadcast this blog to newsletter subscribers"
+                                        >
+                                            <FaPaperPlane className={`text-[10px] ${broadcasting ? 'animate-pulse' : ''}`} />
+                                            {broadcasting ? 'Broadcasting...' : broadcastMessage || 'Broadcast'}
+                                        </button>
+                                        <button
+                                            onClick={() => openEditor(blog, (updated) => setBlog(updated), () => navigate('/blogs'))}
+                                            className="flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 font-mono text-xs text-white/70 hover:bg-white/10 hover:text-white transition"
+                                        >
+                                            <FaPen className="text-xs" /> Edit
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -297,6 +334,14 @@ const BlogDetailPage = () => {
                         {/* Full Content Body */}
                         <div className="prose prose-invert max-w-none my-10">
                             {renderContent(blog.content)}
+                        </div>
+
+                        {/* Newsletter Subscription Section */}
+                        <div className="my-16">
+                            <NewsletterCard
+                                title="Liked this piece? Get the next one."
+                                subtitle="I share deep dives on full-stack systems, machine learning, and lessons learned while building. Straight to your inbox."
+                            />
                         </div>
 
                         {/* Footer Navigation */}
