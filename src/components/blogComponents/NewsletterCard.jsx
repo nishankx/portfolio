@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { FaPaperPlane, FaCheckCircle } from 'react-icons/fa';
 import { subscribeToNewsletter } from '../../libs/blogApi';
-import { sendWelcomeOnboardingEmail } from '../../libs/emailService';
 
 const NewsletterCard = ({
     title = 'Join the Newsletter',
@@ -25,14 +24,7 @@ const NewsletterCard = ({
 
         setLoading(true);
         try {
-            // 1. Save email to MongoDB on the backend
             await subscribeToNewsletter(email.trim());
-
-            // 2. Dispatch custom welcome onboarding email directly from browser via EmailJS
-            sendWelcomeOnboardingEmail(email.trim()).catch((err) =>
-                console.error('[Newsletter Welcome Error]:', err)
-            );
-
             setSuccess(true);
             setEmail('');
         } catch (err) {

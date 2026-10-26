@@ -120,18 +120,4 @@ export async function broadcastBlogToSubscribers(id, adminKey) {
     return data;
 }
 
-export async function fetchSubscribers(adminKey) {
-    const res = await fetch(`${API_BASE_URL}/newsletter/subscribers`, {
-        headers: {
-            'x-admin-key': adminKey,
-        },
-    });
-    const data = await res.json();
-    if (!res.ok) {
-        throw new Error(data.message || 'Failed to fetch subscribers');
-    }
-    return data.subscribers || [];
-}
-
-
 
