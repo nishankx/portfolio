@@ -19,7 +19,43 @@ const bgStyle = {
     backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)`,
     backgroundSize: "26px 26px",
   }
+
+// Filter contributions to show only the last 4 months on smaller screens
+const selectLastFourMonths = (contributions) => {
+  if (!Array.isArray(contributions) || contributions.length === 0) return contributions;
+
+  let latestYear = 0;
+  let latestMonth = 0;
+
+  for (const day of contributions) {
+    const [y, m] = day.date.split('-').map(Number);
+    if (y > latestYear || (y === latestYear && m > latestMonth)) {
+      latestYear = y;
+      latestMonth = m;
+    }
+  }
+
+  return contributions.filter((day) => {
+    const [year, month] = day.date.split('-').map(Number);
+    const monthDiff = (latestYear - year) * 12 + (latestMonth - month);
+    return monthDiff >= 0 && monthDiff < 4;
+  });
+};
+
 const About = () => {
+    const [isMobile, setIsMobile] = useState(() =>
+      typeof window !== 'undefined' ? window.innerWidth < 768 : false
+    );
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const [formData, setFormData] = useState({
       message: "",
       });
@@ -113,7 +149,7 @@ const About = () => {
       ...bgStyle,
       backgroundPositionY: bgY,
     }}
-    className='relative overflow-x-hidden bg-black pb-48 px-12'>
+    className='relative overflow-x-hidden bg-black pb-48 px-6 sm:px-8 md:px-12'>
 
     <motion.div
       style={{
@@ -174,11 +210,13 @@ const About = () => {
             scale: calScale,
             opacity: calOpacity,
           }}
-          className='bg-black text-white pt-10 mb-5'>
+          className='bg-black text-white pt-10 mb-5 overflow-x-auto max-w-full'>
 
           <GitHubCalendar
+            key={isMobile ? 'mobile-4m' : 'desktop-full'}
             username="nishankx"
             showTotalCount={false}
+            transformData={isMobile ? selectLastFourMonths : undefined}
           />
 
         </motion.div>
