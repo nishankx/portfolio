@@ -19,7 +19,7 @@ export const AdminAuthProvider = ({ children }) => {
     // Global keyboard shortcut: Ctrl + Shift + A (or Cmd + Shift + A)
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.code === 'KeyA')) {
                 e.preventDefault();
                 setIsAuthModalOpen((prev) => !prev);
             }
