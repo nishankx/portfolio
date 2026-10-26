@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { bgStyle } from '../../libs/settings';
-import { fetchBlogByIdOrSlug, broadcastBlogToSubscribers } from '../../libs/blogApi';
+import { fetchBlogByIdOrSlug, fetchSubscribers } from '../../libs/blogApi';
+import { broadcastArticleEmail } from '../../libs/emailService';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import BlogNavbar from '../../components/blogComponents/BlogNavbar';
 import NewsletterCard from '../../components/blogComponents/NewsletterCard';
@@ -143,10 +144,23 @@ const BlogDetailPage = () => {
 
         setBroadcasting(true);
         try {
-            const res = await broadcastBlogToSubscribers(blog._id, key);
-            setBroadcastMessage('Dispatched!');
-            setTimeout(() => setBroadcastMessage(''), 3000);
-            alert(res.message || 'Broadcast dispatched successfully!');
+            const subs = await fetchSubscribers(key);
+            const activeSubs = Array.isArray(subs) ? subs.filter((s) => s.status === 'active') : [];
+
+            if (activeSubs.length === 0) {
+                alert('No active subscribers found in database.');
+                return;
+            }
+
+            let sentCount = 0;
+            for (const sub of activeSubs) {
+                const ok = await broadcastArticleEmail(blog, sub.email);
+                if (ok) sentCount++;
+            }
+
+            setBroadcastMessage(`Sent to ${sentCount}/${activeSubs.length}!`);
+            setTimeout(() => setBroadcastMessage(''), 4000);
+            alert(`Broadcast dispatched to ${sentCount} of ${activeSubs.length} subscriber(s)!`);
         } catch (err) {
             alert(err.message || 'Failed to broadcast blog');
         } finally {

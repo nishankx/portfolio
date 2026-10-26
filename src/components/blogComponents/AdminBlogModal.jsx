@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
 import { FaLock, FaKey, FaTrash, FaPaperPlane } from 'react-icons/fa';
-import { createBlog, updateBlog, deleteBlog } from '../../libs/blogApi';
+import { createBlog, updateBlog, deleteBlog, fetchSubscribers } from '../../libs/blogApi';
+import { broadcastArticleEmail } from '../../libs/emailService';
 
 const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDeleted }) => {
     const [adminKey, setAdminKey] = useState('');
@@ -87,6 +88,17 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
         try {
             if (existingBlog) {
                 const updated = await updateBlog(existingBlog._id, payload, adminKey.trim());
+                if (broadcast && isPublished) {
+                    fetchSubscribers(adminKey.trim())
+                        .then((subs) => {
+                            const activeSubs = Array.isArray(subs) ? subs.filter((s) => s.status === 'active') : [];
+                            for (const sub of activeSubs) {
+                                broadcastArticleEmail(updated, sub.email);
+                            }
+                        })
+                        .catch((err) => console.error('[Client Broadcast Error]:', err));
+                }
+
                 setSuccessMessage(
                     broadcast && isPublished
                         ? 'Post updated & broadcast sent to newsletter subscribers!'
@@ -98,6 +110,17 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                 }, 900);
             } else {
                 const created = await createBlog(payload, adminKey.trim());
+                if (broadcast && isPublished) {
+                    fetchSubscribers(adminKey.trim())
+                        .then((subs) => {
+                            const activeSubs = Array.isArray(subs) ? subs.filter((s) => s.status === 'active') : [];
+                            for (const sub of activeSubs) {
+                                broadcastArticleEmail(created, sub.email);
+                            }
+                        })
+                        .catch((err) => console.error('[Client Broadcast Error]:', err));
+                }
+
                 setSuccessMessage(
                     broadcast && isPublished
                         ? 'Post published & broadcast sent to newsletter subscribers!'
