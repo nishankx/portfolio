@@ -62,7 +62,7 @@ const BlogNavbar = ({ onOpenAdmin }) => {
                         </button>
                         <button
                             onClick={() => setIsAuthModalOpen(true)}
-                            title="Admin Session & Newsletter"
+                            title="Admin Session"
                             className="flex items-center justify-center rounded-full h-8 w-8 text-emerald-400 hover:text-emerald-300 hover:bg-white/10 transition"
                         >
                             <FaUserShield className="text-sm" />

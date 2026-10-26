@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaLock, FaKey, FaTrash, FaPaperPlane } from 'react-icons/fa';
+import { FaLock, FaKey, FaTrash } from 'react-icons/fa';
 import { createBlog, updateBlog, deleteBlog } from '../../libs/blogApi';
 
 const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDeleted }) => {
@@ -13,8 +13,6 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
     const [tags, setTags] = useState('');
     const [coverImage, setCoverImage] = useState('');
     const [isPublished, setIsPublished] = useState(true);
-    const [notifySubscribers, setNotifySubscribers] = useState(false);
-    const [customNote, setCustomNote] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -33,7 +31,6 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags(existingBlog.tags ? existingBlog.tags.join(', ') : '');
             setCoverImage(existingBlog.coverImage || '');
             setIsPublished(existingBlog.isPublished !== undefined ? existingBlog.isPublished : true);
-            setNotifySubscribers(false);
         } else {
             setTitle('');
             setSlug('');
@@ -42,7 +39,6 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             setTags('');
             setCoverImage('');
             setIsPublished(true);
-            setNotifySubscribers(true);
         }
         setError('');
         setSuccessMessage('');
@@ -82,30 +78,19 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
             coverImage: coverImage.trim() || undefined,
             tags: parsedTags,
             isPublished,
-            notifySubscribers: Boolean(notifySubscribers),
-            isUpcoming: !isPublished,
-            customNote: customNote.trim() || undefined,
         };
 
         try {
             if (existingBlog) {
                 const updated = await updateBlog(existingBlog._id, payload, adminKey.trim());
-                setSuccessMessage(
-                    notifySubscribers
-                        ? (isPublished ? 'Post updated & newsletter subscribers notified!' : 'Post updated & upcoming preview broadcasted!')
-                        : 'Post updated successfully!'
-                );
+                setSuccessMessage('Post updated successfully!');
                 setTimeout(() => {
                     if (onSaved) onSaved(updated);
                     onClose();
                 }, 900);
             } else {
                 const created = await createBlog(payload, adminKey.trim());
-                setSuccessMessage(
-                    notifySubscribers
-                        ? (isPublished ? 'Post published & newsletter subscribers notified!' : 'Post created & upcoming preview broadcasted!')
-                        : 'Post created successfully!'
-                );
+                setSuccessMessage('Post created successfully!');
                 setTimeout(() => {
                     if (onSaved) onSaved(created);
                     onClose();
@@ -283,16 +268,14 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                             />
                         </div>
 
-                        {/* Publish & Newsletter Toggles */}
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+                        {/* Publish Toggle */}
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                             <label className="flex items-center gap-3 cursor-pointer select-none">
                                 <input
                                     type="checkbox"
                                     id="isPublished"
                                     checked={isPublished}
-                                    onChange={(e) => {
-                                        setIsPublished(e.target.checked);
-                                    }}
+                                    onChange={(e) => setIsPublished(e.target.checked)}
                                     className="h-4 w-4 rounded border-white/20 bg-white/10 text-white accent-white cursor-pointer"
                                 />
                                 <div>
@@ -306,43 +289,6 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                                     </p>
                                 </div>
                             </label>
-
-                            <div className="space-y-2">
-                                <label className="flex items-start gap-3 cursor-pointer select-none">
-                                    <input
-                                        type="checkbox"
-                                        id="notifySubscribers"
-                                        checked={notifySubscribers}
-                                        onChange={(e) => setNotifySubscribers(e.target.checked)}
-                                        className="mt-0.5 h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 accent-emerald-500 cursor-pointer"
-                                    />
-                                    <div>
-                                        <span className={`font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 ${isPublished ? 'text-emerald-400' : 'text-amber-400'}`}>
-                                            <FaPaperPlane className="text-[10px]" />
-                                            {isPublished
-                                                ? "Broadcast new article to subscribers via Email"
-                                                : "Broadcast as upcoming sneak peek to subscribers via Email"}
-                                        </span>
-                                        <p className="font-colitez text-xs text-white/50">
-                                            {isPublished
-                                                ? "Sends an automated write-up announcement to all active subscribers."
-                                                : "Broadcasts an exclusive preview teaser of this upcoming post."}
-                                        </p>
-                                    </div>
-                                </label>
-
-                                {notifySubscribers && (
-                                    <div className="pl-7 pt-1">
-                                        <input
-                                            type="text"
-                                            value={customNote}
-                                            onChange={(e) => setCustomNote(e.target.value)}
-                                            placeholder="Optional note for subscribers (e.g. 'Dropping next week, here is an early look!')"
-                                            className="w-full rounded-xl border border-white/15 bg-white/5 px-3.5 py-2 text-xs font-mono text-white placeholder-white/30 focus:border-white/40 focus:outline-none transition"
-                                        />
-                                    </div>
-                                )}
-                            </div>
                         </div>
 
                         {/* Actions */}
