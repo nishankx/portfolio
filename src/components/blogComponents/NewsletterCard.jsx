@@ -5,7 +5,7 @@ import { subscribeToNewsletter } from '../../libs/blogApi';
 
 const NewsletterCard = ({
     title = 'Join the Newsletter',
-    subtitle = 'Get notified whenever I publish a new write-up on software engineering, machine learning, and systems design.',
+    subtitle = 'Get notified whenever I publish a new blog.',
     className = '',
 }) => {
     const [email, setEmail] = useState('');
