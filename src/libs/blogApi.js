@@ -132,3 +132,35 @@ export async function fetchNewsletterStats(adminKey) {
     return data;
 }
 
+export async function broadcastBlogToSubscribers(id, options = {}, adminKey) {
+    const res = await fetch(`${API_BASE_URL}/blogs/${id}/broadcast`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': adminKey,
+        },
+        body: JSON.stringify(options),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to broadcast blog to subscribers');
+    }
+    return data;
+}
+
+export async function sendTestOnboardingEmail(targetEmail, adminKey) {
+    const res = await fetch(`${API_BASE_URL}/newsletter/test-onboarding`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': adminKey,
+        },
+        body: JSON.stringify({ email: targetEmail }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.message || 'Failed to send test onboarding email');
+    }
+    return data;
+}
+

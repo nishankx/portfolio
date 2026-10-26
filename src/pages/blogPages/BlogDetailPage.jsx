@@ -6,7 +6,8 @@ import { fetchBlogByIdOrSlug } from '../../libs/blogApi';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import BlogNavbar from '../../components/blogComponents/BlogNavbar';
 import NewsletterCard from '../../components/blogComponents/NewsletterCard';
-import { FaArrowLeft, FaClock, FaCalendarAlt, FaPen, FaShareAlt } from 'react-icons/fa';
+import BroadcastModal from '../../components/blogComponents/BroadcastModal';
+import { FaArrowLeft, FaClock, FaCalendarAlt, FaPen, FaShareAlt, FaPaperPlane } from 'react-icons/fa';
 
 // Helper to render markdown content with clean styling matching the design
 const renderContent = (content) => {
@@ -128,6 +129,7 @@ const BlogDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [copied, setCopied] = useState(false);
+    const [broadcastOpen, setBroadcastOpen] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -265,15 +267,31 @@ const BlogDetailPage = () => {
                                     {copied ? 'Copied Link!' : 'Share'}
                                 </button>
                                 {isAdmin && (
-                                    <button
-                                        onClick={() => openEditor(blog, (updated) => setBlog(updated), () => navigate('/blogs'))}
-                                        className="flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 font-mono text-xs text-white/70 hover:bg-white/10 hover:text-white transition"
-                                    >
-                                        <FaPen className="text-xs" /> Edit
-                                    </button>
+                                    <>
+                                        <button
+                                            onClick={() => setBroadcastOpen(true)}
+                                            className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 font-mono text-xs text-emerald-300 hover:bg-emerald-500/20 transition shadow-sm"
+                                            title="Broadcast this blog to newsletter subscribers"
+                                        >
+                                            <FaPaperPlane className="text-[10px]" /> Broadcast
+                                        </button>
+                                        <button
+                                            onClick={() => openEditor(blog, (updated) => setBlog(updated), () => navigate('/blogs'))}
+                                            className="flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 font-mono text-xs text-white/70 hover:bg-white/10 hover:text-white transition"
+                                        >
+                                            <FaPen className="text-xs" /> Edit
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>
+
+                        {/* Broadcast Modal */}
+                        <BroadcastModal
+                            isOpen={broadcastOpen}
+                            onClose={() => setBroadcastOpen(false)}
+                            blog={blog}
+                        />
 
                         {/* Optional Cover Image */}
                         {blog.coverImage && (

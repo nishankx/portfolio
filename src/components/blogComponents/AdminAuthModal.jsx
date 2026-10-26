@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle, FaUsers, FaSync } from 'react-icons/fa';
-import { verifyAdminKey, fetchNewsletterStats, syncNewsletterAudience } from '../../libs/blogApi';
+import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle, FaUsers, FaSync, FaPaperPlane } from 'react-icons/fa';
+import {
+    verifyAdminKey,
+    fetchNewsletterStats,
+    syncNewsletterAudience,
+    sendTestOnboardingEmail,
+} from '../../libs/blogApi';
 
 const AdminAuthModal = ({
     isOpen,
@@ -55,6 +60,8 @@ const AdminAuthModal = ({
         }
     };
 
+    const [testingEmail, setTestingEmail] = useState(false);
+
     const handleSyncAudience = async () => {
         const key = localStorage.getItem('portfolio_admin_key');
         if (!key) return;
@@ -69,6 +76,21 @@ const AdminAuthModal = ({
             setSyncMessage(err.message || 'Audience sync failed.');
         } finally {
             setSyncing(false);
+        }
+    };
+
+    const handleSendTestOnboarding = async () => {
+        const key = localStorage.getItem('portfolio_admin_key');
+        if (!key) return;
+        setTestingEmail(true);
+        setSyncMessage('');
+        try {
+            const res = await sendTestOnboardingEmail(null, key);
+            setSyncMessage(res.message || 'Test welcome email sent! Check your inbox.');
+        } catch (err) {
+            setSyncMessage(err.message || 'Failed to send test email.');
+        } finally {
+            setTestingEmail(false);
         }
     };
 
@@ -136,17 +158,28 @@ const AdminAuthModal = ({
                                 <p className="font-colitez text-xs text-white/50">
                                     Subscribers are saved in MongoDB and can be synced to your Resend Audience list for broadcasts.
                                 </p>
-                                <button
-                                    type="button"
-                                    onClick={handleSyncAudience}
-                                    disabled={syncing}
-                                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 py-2 font-mono text-[11px] uppercase tracking-wider text-white hover:bg-white/10 transition disabled:opacity-50"
-                                >
-                                    <FaSync className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} />
-                                    {syncing ? 'Syncing to Resend...' : 'Sync to Resend Audience'}
-                                </button>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                    <button
+                                        type="button"
+                                        onClick={handleSyncAudience}
+                                        disabled={syncing}
+                                        className="flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 py-2.5 font-mono text-[10px] uppercase tracking-wider text-white hover:bg-white/10 transition disabled:opacity-50"
+                                    >
+                                        <FaSync className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} />
+                                        {syncing ? 'Syncing...' : 'Sync Audience'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleSendTestOnboarding}
+                                        disabled={testingEmail}
+                                        className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 py-2.5 font-mono text-[10px] uppercase tracking-wider text-emerald-300 hover:bg-emerald-500/20 transition disabled:opacity-50"
+                                    >
+                                        <FaPaperPlane className={`text-[10px] ${testingEmail ? 'animate-pulse' : ''}`} />
+                                        {testingEmail ? 'Sending...' : 'Test Welcome Mail'}
+                                    </button>
+                                </div>
                                 {syncMessage && (
-                                    <p className="font-mono text-[11px] text-white/70 text-center">
+                                    <p className="font-mono text-[11px] text-white/80 text-center rounded-lg bg-white/5 p-2 border border-white/10">
                                         {syncMessage}
                                     </p>
                                 )}
