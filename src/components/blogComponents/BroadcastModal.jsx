@@ -97,7 +97,7 @@ const BroadcastModal = ({ isOpen, onClose, blog }) => {
                     <div className="flex items-start justify-between border-b border-white/10 pb-4 mb-5">
                         <div>
                             <span className="font-mono text-[10px] tracking-[.3em] uppercase text-emerald-400 font-semibold flex items-center gap-1.5">
-                                <FaPaperPlane className="text-[9px]" /> RESEND NEWSLETTER BROADCAST
+                                <FaPaperPlane className="text-[9px]" /> NEWSLETTER EMAIL BROADCAST
                             </span>
                             <h2 className="mt-1 font-impactImp text-2xl tracking-tight text-white line-clamp-1">
                                 {blog.title}

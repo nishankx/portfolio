@@ -320,8 +320,8 @@ const AdminBlogModal = ({ isOpen, onClose, existingBlog = null, onSaved, onDelet
                                         <span className={`font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 ${isPublished ? 'text-emerald-400' : 'text-amber-400'}`}>
                                             <FaPaperPlane className="text-[10px]" />
                                             {isPublished
-                                                ? "Broadcast new article to subscribers via Resend"
-                                                : "Broadcast as upcoming sneak peek to subscribers via Resend"}
+                                                ? "Broadcast new article to subscribers via Email"
+                                                : "Broadcast as upcoming sneak peek to subscribers via Email"}
                                         </span>
                                         <p className="font-colitez text-xs text-white/50">
                                             {isPublished

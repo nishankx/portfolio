@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { IoClose } from 'react-icons/io5';
-import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle, FaUsers, FaSync, FaPaperPlane } from 'react-icons/fa';
+import { FaKey, FaSignOutAlt, FaPenNib, FaCheckCircle, FaUsers, FaPaperPlane } from 'react-icons/fa';
 import {
     verifyAdminKey,
     fetchNewsletterStats,
-    syncNewsletterAudience,
     sendTestOnboardingEmail,
 } from '../../libs/blogApi';
 
@@ -61,34 +60,18 @@ const AdminAuthModal = ({
     };
 
     const [testingEmail, setTestingEmail] = useState(false);
-
-    const handleSyncAudience = async () => {
-        const key = localStorage.getItem('portfolio_admin_key');
-        if (!key) return;
-        setSyncing(true);
-        setSyncMessage('');
-        try {
-            const res = await syncNewsletterAudience(key);
-            setSyncMessage(res.message || 'Synced to Resend Audience successfully!');
-            const updatedStats = await fetchNewsletterStats(key);
-            setStats(updatedStats);
-        } catch (err) {
-            setSyncMessage(err.message || 'Audience sync failed.');
-        } finally {
-            setSyncing(false);
-        }
-    };
+    const [actionMessage, setActionMessage] = useState('');
 
     const handleSendTestOnboarding = async () => {
         const key = localStorage.getItem('portfolio_admin_key');
         if (!key) return;
         setTestingEmail(true);
-        setSyncMessage('');
+        setActionMessage('');
         try {
             const res = await sendTestOnboardingEmail(null, key);
-            setSyncMessage(res.message || 'Test welcome email sent! Check your inbox.');
+            setActionMessage(res.message || 'Test welcome email delivered! Check your inbox.');
         } catch (err) {
-            setSyncMessage(err.message || 'Failed to send test email.');
+            setActionMessage(err.message || 'Failed to send test email.');
         } finally {
             setTestingEmail(false);
         }
@@ -142,45 +125,34 @@ const AdminAuthModal = ({
                                 </div>
                             </div>
 
-                            {/* Newsletter Stats & Audience Sync */}
+                            {/* Newsletter Subscribers */}
                             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <FaUsers className="text-white/60 text-sm" />
                                         <span className="font-mono text-xs uppercase tracking-wider text-white">
-                                            Newsletter Audience
+                                            Newsletter Subscribers
                                         </span>
                                     </div>
                                     <span className="font-mono text-xs text-emerald-400 font-semibold">
-                                        {stats ? `${stats.active} Active` : 'Loading...'}
+                                        {stats ? `${stats.active} Active` : '0 Active'}
                                     </span>
                                 </div>
                                 <p className="font-colitez text-xs text-white/50">
-                                    Subscribers are saved in MongoDB and can be synced to your Resend Audience list for broadcasts.
+                                    Subscribers are stored safely in MongoDB and receive automatic welcome emails and upcoming blog broadcasts.
                                 </p>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                                    <button
-                                        type="button"
-                                        onClick={handleSyncAudience}
-                                        disabled={syncing}
-                                        className="flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 py-2.5 font-mono text-[10px] uppercase tracking-wider text-white hover:bg-white/10 transition disabled:opacity-50"
-                                    >
-                                        <FaSync className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} />
-                                        {syncing ? 'Syncing...' : 'Sync Audience'}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={handleSendTestOnboarding}
-                                        disabled={testingEmail}
-                                        className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 py-2.5 font-mono text-[10px] uppercase tracking-wider text-emerald-300 hover:bg-emerald-500/20 transition disabled:opacity-50"
-                                    >
-                                        <FaPaperPlane className={`text-[10px] ${testingEmail ? 'animate-pulse' : ''}`} />
-                                        {testingEmail ? 'Sending...' : 'Test Welcome Mail'}
-                                    </button>
-                                </div>
-                                {syncMessage && (
+                                <button
+                                    type="button"
+                                    onClick={handleSendTestOnboarding}
+                                    disabled={testingEmail}
+                                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 py-2.5 font-mono text-[10px] uppercase tracking-wider text-emerald-300 hover:bg-emerald-500/20 transition disabled:opacity-50"
+                                >
+                                    <FaPaperPlane className={`text-[10px] ${testingEmail ? 'animate-pulse' : ''}`} />
+                                    {testingEmail ? 'Sending...' : 'Send Test Welcome Email'}
+                                </button>
+                                {actionMessage && (
                                     <p className="font-mono text-[11px] text-white/80 text-center rounded-lg bg-white/5 p-2 border border-white/10">
-                                        {syncMessage}
+                                        {actionMessage}
                                     </p>
                                 )}
                             </div>
