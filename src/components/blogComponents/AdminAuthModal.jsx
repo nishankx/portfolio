@@ -34,7 +34,6 @@ const AdminAuthModal = ({
         }
     }, [isOpen, isAdmin]);
 
-    if (!isOpen) return null;
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -85,8 +84,14 @@ const AdminAuthModal = ({
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-                <motion.div
+            {isOpen && (
+                <div
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) onClose();
+                    }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+                >
+                    <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -223,6 +228,7 @@ const AdminAuthModal = ({
                     )}
                 </motion.div>
             </div>
+            )}
         </AnimatePresence>
     );
 };

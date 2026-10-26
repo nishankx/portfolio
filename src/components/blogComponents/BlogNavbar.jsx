@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Link, useLocation } from 'react-router';
-import { FaHome, FaPenNib, FaBookOpen } from 'react-icons/fa';
+import { FaHome, FaPenNib, FaBookOpen, FaLock, FaUserShield } from 'react-icons/fa';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
-const BlogNavbar = ({ onOpenAdmin, isAdmin = false }) => {
+const BlogNavbar = ({ onOpenAdmin }) => {
     const location = useLocation();
+    const { isAdmin, setIsAuthModalOpen } = useAdminAuth();
     const [hovered, setHovered] = useState(null);
 
     const items = [
@@ -47,9 +49,10 @@ const BlogNavbar = ({ onOpenAdmin, isAdmin = false }) => {
                     );
                 })}
 
-                {isAdmin && (
-                    <>
-                        <div className="h-4 w-[1px] bg-white/20 mx-1" />
+                <div className="h-4 w-[1px] bg-white/20 mx-1" />
+
+                {isAdmin ? (
+                    <div className="flex items-center gap-1.5">
                         <button
                             onClick={onOpenAdmin}
                             className="relative flex items-center gap-1.5 rounded-full bg-white px-3 sm:px-4 py-2 text-xs font-mono uppercase tracking-wider text-black transition hover:bg-neutral-200 active:scale-95"
@@ -57,7 +60,22 @@ const BlogNavbar = ({ onOpenAdmin, isAdmin = false }) => {
                             <FaPenNib className="text-xs" />
                             <span className="hidden sm:inline">Write</span>
                         </button>
-                    </>
+                        <button
+                            onClick={() => setIsAuthModalOpen(true)}
+                            title="Admin Session & Newsletter"
+                            className="flex items-center justify-center rounded-full h-8 w-8 text-emerald-400 hover:text-emerald-300 hover:bg-white/10 transition"
+                        >
+                            <FaUserShield className="text-sm" />
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setIsAuthModalOpen(true)}
+                        title="Admin Login (or Ctrl+Shift+A)"
+                        className="flex items-center justify-center rounded-full h-8 w-8 text-white/40 hover:text-white hover:bg-white/10 transition"
+                    >
+                        <FaLock className="text-xs" />
+                    </button>
                 )}
             </nav>
         </motion.div>
